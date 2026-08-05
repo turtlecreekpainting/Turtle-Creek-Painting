@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turtle Creek Painting | Professional Painting Services in Lebanon, OH</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/org/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Custom Red Cursor Effect */
+        * {
+            cursor: none !important;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #custom-cursor {
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            background-color: #e63946;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 12px rgba(230, 57, 70, 0.8), 0 0 20px rgba(230, 57, 70, 0.4);
+            transition: transform 0.1s ease-out, width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+        }
+
+        #custom-cursor-follower {
+            position: fixed;
+            width: 36px;
+            height: 36px;
+            border: 2px solid rgba(230, 57, 70, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease-out, width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+        }
+
+        body.cursor-hover #custom-cursor {
+            width: 22px;
+            height: 22px;
+            background-color: #d62828;
+            box-shadow: 0 0 18px rgba(214, 40, 40, 1);
+        }
+
+        body.cursor-hover #custom-cursor-follower {
+            width: 50px;
+            height: 50px;
+            border-color: rgba(214, 40, 40, 0.8);
+        }
+
+        /* Color Palette & Variables */
+        :root {
+            --bg-dark: #0b0f19;
+            --bg-card: #131b2e;
+            --bg-card-hover: #1a253f;
+            --primary-gold: #d4af37;
+            --primary-gold-hover: #f3e5ab;
+            --accent-red: #e63946;
+            --text-light: #f8f9fa;
+            --text-muted: #a0aec0;
+            --border-color: rgba(212, 175, 55, 0.2);
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: #05070c;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+        }
+
+        .top-bar-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .top-bar-info i {
+            color: var(--primary-gold);
+            margin-right: 6px;
+        }
+
+        .top-bar-links a {
+            color: var(--text-muted);
+            margin-left: 15px;
+        }
+
+        .top-bar-links a:hover {
+            color: var(--primary-gold);
+        }
+
+        /* Header / Navbar */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-container img {
+            height: 55px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 1px;
+        }
+
+        .brand-name span {
+            color: var(--primary-gold);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-menu a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--primary-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+            color: #000;
+            padding: 12px 26px;
+            font-weight: 700;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 100%);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            background: linear-gradient(90deg, rgba(11, 15, 25, 0.95) 0%, rgba(11, 15, 25, 0.75) 50%, rgba(11, 15, 25, 0.4) 100%), 
+                        url('https://turtlecreekpainting.com/wp-content/uploads/2026/05/20260319_153408-1024x576.jpg') center/cover no-repeat;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-content {
+            max-width: 650px;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 3.2rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .hero h1 span {
+            color: var(--primary-gold);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+        }
+
+        /* Section Global */
+        section {
+            padding: 90px 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+        }
+
+        .section-subtitle {
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.4rem;
+            color: var(--text-light);
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .service-img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .service-body {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: flex-column;
+            justify-content: space-between;
+        }
+
+        .service-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--text-light);
+        }
+
+        .service-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .service-btn {
+            color: var(--primary-gold);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .service-btn:hover {
+            color: var(--primary-gold-hover);
+            gap: 12px;
+        }
+
+        .center-btn-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* About Us Section */
+        .about-section {
+            background-color: #080c14;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .about-content p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .about-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .about-feature-item i {
+            color: var(--primary-gold);
+            font-size: 1.2rem;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Service Area & References Quick Links Bar */
+        .auxiliary-links-bar {
+            background: linear-gradient(135deg, #131b2e 0%, #080c14 100%);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            padding: 40px 5%;
+        }
+
+        .auxiliary-links-bar h3 {
+            font-family: var(--font-heading);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .aux-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            padding: 12px 28px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-gold);
+            color: #000;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            background-color: var(--bg-dark);
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .review-card {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .stars {
+            color: #ffc107;
+            margin-bottom: 15px;
+        }
+
+        .review-text {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .reviewer-name {
+            font-weight: 700;
+            color: var(--text-light);
+            font-family: var(--font-heading);
+        }
+
+        .reviewer-title {
+            font-size: 0.8rem;
+            color: var(--primary-gold);
+        }
+
+        /* FAQs Section */
+        .faq-section {
+            background-color: #080c14;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+        }
+
+        .faq-answer {
+            padding: 0 25px 20px 25px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #040609;
+            border-top: 1px solid var(--border-color);
+            padding: 70px 5% 20px 5%;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-heading);
+            color: var(--primary-gold);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background-color: var(--primary-gold);
+        }
+
+        .footer-col p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-gold);
+            padding-left: 5px;
+        }
+
+        .contact-info-list {
+            list-style: none;
+        }
+
+        .contact-info-list li {
+            display: flex;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-info-list i {
+            color: var(--primary-gold);
+            margin-top: 3px;
+        }
+
+        .map-wrapper {
+            width: 100%;
+            height: 180px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 25px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .external-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            border-radius: 3px;
+            background: var(--bg-card);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-sm:hover {
+            background: var(--primary-gold);
+            color: #000;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .about-section {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor elements -->
+    <div id="custom-cursor"></div>
+    <div id="custom-cursor-follower"></div>
+
+    <!-- Top Info Bar -->
+    <div class="top-bar">
+        <div class="top-bar-info">
+            <span><i class="fa-solid fa-phone"></i> 513-812-7335</span>
+            <span><i class="fa-solid fa-envelope"></i> chris@turtlecreekpainting.com</span>
+            <span><i class="fa-solid fa-clock"></i> Mon - Fri: 9:00AM - 5:00PM</span>
+        </div>
+        <div class="top-bar-links">
+            <a href="https://g.page/r/CYrfu3ns2ipjEBM/" target="_blank"><i class="fa-brands fa-google"></i> GMB Profile</a>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo-container">
+            <img src="https://turtlecreekpainting.com/wp-content/uploads/2025/11/Group-1171275605.png" alt="Turtle Creek Painting Logo">
+            <div class="brand-name">Turtle Creek <span>Painting</span></div>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="https://turtlecreekpainting.com/">Home</a></li>
+                <li><a href="https://turtlecreekpainting.com/about-us/">About Us</a></li>
+                <li><a href="https://turtlecreekpainting.com/services/">Services</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+            <a href="tel:5138127335" class="btn-gold">Call Now</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">Lebanon, OH & Surrounding Areas</span>
+            <h1>Premier <span>Painting</span> Craftsmanship</h1>
+            <p>Turtle Creek Painting proudly delivers professional residential and commercial painting services in Lebanon, OH, with a focus on quality craftsmanship, premium materials, and lasting results.</p>
+            <a href="https://turtlecreekpainting.com/" class="btn-gold">Explore Website</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="section-header">
+            <span class="section-subtitle">Our Expertise</span>
+            <h2 class="section-title">Specialized Painting Solutions</h2>
+        </div>
+
+        <div class="services-grid">
+            <!-- Service 1 -->
+            <div class="service-card">
+                <img src="https://turtlecreekpainting.com/wp-content/uploads/2026/05/20260319_153408-1024x576.jpg" alt="Interior and Exterior Residential Painting" class="service-img">
+                <div class="service-body">
+                    <div>
+                        <h3 class="service-title">Interior & Exterior Residential</h3>
+                        <p class="service-desc">Transform your home with precise interior details and durable, weather-resistant exterior painting using top-tier paint formulas.</p>
+                    </div>
+                    <a href="https://turtlecreekpainting.com/services/" class="service-btn">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="service-card">
+                <img src="https://turtlecreekpainting.com/wp-content/uploads/2026/07/before-after-4-1024x1024.jpg" alt="Interior and Exterior Commercial Painting" class="service-img">
+                <div class="service-body">
+                    <div>
+                        <h3 class="service-title">Interior & Exterior Commercial</h3>
+                        <p class="service-desc">Dependable, professional commercial painting executed with efficiency to enhance your commercial property’s appeal without disrupting operations.</p>
+                    </div>
+                    <a href="https://turtlecreekpainting.com/services/" class="service-btn">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="service-card">
+                <img src="https://turtlecreekpainting.com/wp-content/uploads/2026/02/Fence-and-deck-staining.jpg" alt="Fence and Deck Staining or Painting" class="service-img">
+                <div class="service-body">
+                    <div>
+                        <h3 class="service-title">Fence & Deck Staining / Painting</h3>
+                        <p class="service-desc">Protect and revitalize your outdoor structures. Expert deck and fence staining designed to resist harsh elements and highlight wood grain.</p>
+                    </div>
+                    <a href="https://turtlecreekpainting.com/services/" class="service-btn">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="center-btn-container">
+            <a href="https://turtlecreekpainting.com/services/" class="btn-gold">Explore Services Page</a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-section" id="about">
+        <div class="about-content">
+            <span class="section-subtitle">Dedicated To Excellence</span>
+            <h2>About Turtle Creek Painting</h2>
+            <p>Turtle Creek Painting proudly delivers professional residential and commercial painting services in Lebanon, OH, with a focus on quality craftsmanship and lasting results.</p>
+            <p>We specialize in interior and exterior painting, as well as expert fence and deck staining and painting to enhance your property's beauty and protection. Our experienced team uses premium materials and precise techniques to provide flawless finishes, dependable service, and complete customer satisfaction for every project.</p>
+            
+            <div class="about-features">
+                <div class="about-feature-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Premium Materials</span>
+                </div>
+                <div class="about-feature-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Precise Techniques</span>
+                </div>
+                <div class="about-feature-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Dependable Service</span>
+                </div>
+                <div class="about-feature-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>100% Satisfaction</span>
+                </div>
+            </div>
+
+            <a href="https://turtlecreekpainting.com/about-us/" class="btn-outline">Read More About Us</a>
+        </div>
+        <div class="about-image">
+            <img src="https://turtlecreekpainting.com/wp-content/uploads/2026/05/20260319_153408-1024x576.jpg" alt="Turtle Creek Painting Project Quality">
+        </div>
+    </section>
+
+    <!-- Service Area & References Navigation Bar -->
+    <div class="auxiliary-links-bar">
+        <h3>Explore Our Work & Locations</h3>
+        <div class="aux-buttons">
+            <a href="https://turtlecreekpainting.com/service-area/" class="btn-outline"><i class="fa-solid fa-location-dot"></i> View Our Service Area</a>
+            <a href="https://turtlecreekpainting.com/references/" class="btn-outline"><i class="fa-solid fa-award"></i> View Customer References</a>
+        </div>
+    </div>
+
+    <!-- Customer Reviews Section -->
+    <section class="reviews-section">
+        <div class="section-header">
+            <span class="section-subtitle">Testimonials</span>
+            <h2 class="section-title">What Our Clients Say</h2>
+        </div>
+
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="review-text">"Turtle Creek Painting did an exceptional job on our exterior siding and deck staining. Clean, punctual, and the quality is unbeatable."</p>
+                <div class="reviewer-name">Homeowner in Lebanon</div>
+                <div class="reviewer-title">Residential Client</div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="review-text">"Flawless execution on our interior commercial office space. High attention to detail and zero mess left behind. Highly recommend Chris and his team."</p>
+                <div class="reviewer-name">Business Owner</div>
+                <div class="reviewer-title">Commercial Client</div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="review-text">"Our wooden fence looks brand new after their staining service. Premium craftsmanship and dependable customer service throughout!"</p>
+                <div class="reviewer-name">Local Resident</div>
+                <div class="reviewer-title">Deck & Fence Client</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQs Section -->
+    <section class="faq-section">
+        <div class="section-header">
+            <span class="section-subtitle">Got Questions?</span>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">What areas do you serve?</div>
+                <div class="faq-answer">We proudly serve Lebanon, OH, and surrounding communities with top-grade residential and commercial painting solutions.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Do you offer both interior and exterior painting?</div>
+                <div class="faq-answer">Yes! We specialize in comprehensive interior and exterior painting, as well as deck and fence staining or painting.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How can I request an estimate?</div>
+                <div class="faq-answer">You can call us directly at 513-812-7335 or send an email to chris@turtlecreekpainting.com to discuss your project.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-grid">
+            <!-- Col 1: About/Logo -->
+            <div class="footer-col">
+                <h4>Turtle Creek Painting</h4>
+                <p>Delivering high-end interior, exterior, and protective staining services with flawless finishes and lasting reliability.</p>
+                <div class="external-btns">
+                    <a href="https://g.page/r/CYrfu3ns2ipjEBM/" target="_blank" class="btn-sm">GMB Profile</a>
+                    <a href="https://www.google.com/search?kgmid=/g/11yzn63pcz" target="_blank" class="btn-sm">Knowledge Graph</a>
+                </div>
+            </div>
+
+            <!-- Col 2: Quick Links -->
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="https://turtlecreekpainting.com/">Home</a></li>
+                    <li><a href="https://turtlecreekpainting.com/about-us/">About Us</a></li>
+                    <li><a href="https://turtlecreekpainting.com/services/">Services</a></li>
+                    <li><a href="https://turtlecreekpainting.com/service-area/">Service Area</a></li>
+                    <li><a href="https://turtlecreekpainting.com/references/">References</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Contact Info -->
+            <div class="footer-col">
+                <h4>Contact Information</h4>
+                <ul class="contact-info-list">
+                    <li>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>826 Hawthorne Hill Dr, Lebanon, OH 45036</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-phone"></i>
+                        <span>513-812-7335</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>chris@turtlecreekpainting.com</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Mon - Fri: 9:00AM - 5:00PM</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Col 4: Google Map -->
+            <div class="footer-col">
+                <h4>Location Map</h4>
+                <div class="map-wrapper">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3081.9846351089577!2d-84.2241693!3d39.42447190000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6f04eed238722783%3A0x632adaec79bbdf8a!2sTurtle%20Creek%20Painting%2C%20LLC!5e0!3m2!1sen!2snl!4v1785945540389!5m2!1sen!2snl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright Line -->
+        <div class="copyright">
+            <p>&copy; 2026 The Ranking Geeks. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Custom Cursor Script -->
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        const follower = document.getElementById('custom-cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+
+            follower.style.left = e.clientX + 'px';
+            follower.style.top = e.clientY + 'px';
+        });
+
+        // Add hover effect when hovering over links or buttons
+        const hoverables = document.querySelectorAll('a, button, .service-card, .faq-item');
+        hoverables.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                document.body.classList.add('cursor-hover');
+            });
+            element.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-hover');
+            });
+        });
+    </script>
+</body>
+</html>
